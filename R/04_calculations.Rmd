@@ -1,0 +1,15 @@
+---
+title: "Calculations"
+output: html_notebook
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+combined_data_set %>% 
+  filter(Year == '2016') %>% 
+  summarise(mean(SuicidePer100000))
+
+
+mean(combined_data_set$SuicidePer100000)
+```

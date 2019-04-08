@@ -4,6 +4,10 @@ output: html_notebook
 editor_options: 
   chunk_output_type: console
 ---
+```{r}
+library(tidyverse)
+```
+
 
 ```{r}
 #Load csv file and filter out 'Both sexes'
@@ -13,10 +17,10 @@ suicide_data <- read_csv(file = '~/Library/Mobile Documents/com~apple~CloudDocs/
 
 #Load csv files and load only country and happiness rank
 world16_happiness_data <- read_csv(file = '~/Library/Mobile Documents/com~apple~CloudDocs/ISDS_3070/Suicide_vs_World_Happiness/data/final_project_data/world-happiness-report/2016.csv') %>% 
-  select(Country, 'Happiness Rank')
+  select(Country, HappinessRank)
 
 world15_happiness_data <- read_csv(file = '~/Library/Mobile Documents/com~apple~CloudDocs/ISDS_3070/Suicide_vs_World_Happiness/data/final_project_data/world-happiness-report/2015.csv') %>%  
-  select(Country, 'Happiness Rank')
+  select(Country, HappinessRank)
 
 #adds year columns to world_happiness
 

@@ -39,6 +39,17 @@ combined_data_set <- mutate(suicide_data_combined, Year = as.double(Year)) %>%
 ```
 
 ```{r}
+#chaning col name
+colnames(combined_data_set) <- c("Country", "Year","Sex", "SuicidePer100000", "HappinessRank")
+
+
+
+
+```
+
+
+
+```{r}
 #makes years into a column
 suicide_data_01 <- suicide_data %>% 
   gather(Year, SuicidePer100000, 3:6)
@@ -57,6 +68,9 @@ suicide_data_combined <- suicide_data %>%
 combined_data_set <- mutate(suicide_data_combined, Year = as.double(Year)) %>% 
   left_join(world_happiness) %>% 
   filter(Year >= 2015)
+
+
+typeof(combined_data_set$`Happiness Rank`)
 ```
 
 ```{r}

@@ -1,12 +1,68 @@
 ---
 title: "Analysis"
-output: html_notebook
+output:
+  html_document:
+    df_print: paged
+editor_options:
+  chunk_output_type: console
 ---
 
 ```{r}
+library(tidyverse)
 library(ggplot2)
 ```
 
 ```{r}
+combined_16male <- combined_data_set %>% 
+filter(HappinessRank >= 20) %>% 
+filter(Year == '2016' & Sex == 'Male')
+
+
+combined_data_set %>% 
+  filter(Sex == 'Male' & Year == '2016') %>% 
+  arrange(HappinessRank) %>%
+  top_n(45) %>% 
+ggplot() +
+  geom_point( aes(x = Country, y = SuicidePer100000, color = HappinessRank))
+
+combined_data_set %>% 
+  filter(Sex == 'Male' & Year == '2016') %>% 
+  arrange(HappinessRank) %>%
+  top_n(45) %>% 
+  mutate(groups = case_when(
+    HappinessRank > 100 & HappinessRank < 110 ~ "average",
+    HappinessRank > 110 & HappinessRank < 150 ~ "above"
+  ))
+
+
+
+typeof(combined_data_set$'Happiness Rank')
+glimpse(combined_data_set)
+```
+
+```{r}
+
+combined_data_set %>% 
+  filter(Year == '2016') %>% 
+  arrange(HappinessRank) %>%
+  top_n(-25) %>% 
+ggplot() +
+  geom_col(aes(x = Country, y = SuicidePer100000, fill = Sex))+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+  
+
+combined_data_set %>% 
+  filter(Year == '2016') %>% 
+  arrange(HappinessRank) %>%
+  top_n(25) %>% 
+ggplot() +
+  geom_col(aes(x = Country, y = SuicidePer100000, fill = Sex))+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+  
+
 
 ```
+
+
+
+
