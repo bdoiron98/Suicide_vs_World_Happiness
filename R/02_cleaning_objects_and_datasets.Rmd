@@ -17,10 +17,10 @@ suicide_data <- read_csv(file = '~/Library/Mobile Documents/com~apple~CloudDocs/
 
 #Load csv files and load only country and happiness rank
 world16_happiness_data <- read_csv(file = '~/Library/Mobile Documents/com~apple~CloudDocs/ISDS_3070/Suicide_vs_World_Happiness/data/final_project_data/world-happiness-report/2016.csv') %>% 
-  select(Country, HappinessRank)
+  select(Country, HappinessRank, Region)
 
 world15_happiness_data <- read_csv(file = '~/Library/Mobile Documents/com~apple~CloudDocs/ISDS_3070/Suicide_vs_World_Happiness/data/final_project_data/world-happiness-report/2015.csv') %>%  
-  select(Country, HappinessRank)
+  select(Country, HappinessRank, Region)
 
 #adds year columns to world_happiness
 
@@ -37,6 +37,6 @@ suicide_data_combined <- suicide_data %>%
 
 #creates final data set to have 5 columns: country, year, sex, suicidesper100000, happiness rank
 combined_data_set <- mutate(suicide_data_combined, Year = as.double(Year)) %>% 
-  left_join(world_happiness) %>% 
+  inner_join(world_happiness) %>% 
   filter(Year >= 2015)
 ```
