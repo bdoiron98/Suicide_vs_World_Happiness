@@ -1,16 +1,8 @@
----
-title: "2015 and 2016 Suicides vs. Happines Rankings"
-output:
-  html_document:
-    df_print: paged
-editor_options:
-  chunk_output_type: console
----
-```{r, include=FALSE}
-library(tidyverse)
-```
 
-```{r setup, include=FALSE}
+library(tidyverse)
+
+
+
 #Load csv file and filter out 'Both sexes'
 suicide_data <- read_csv(file = '~/Library/Mobile Documents/com~apple~CloudDocs/ISDS_3070/Suicide_vs_World_Happiness/data/final_project_data/data.csv') %>% 
   filter(Sex != 'Both sexes') %>% 
@@ -118,7 +110,7 @@ combined_data_set %>%
 combined_data_set %>% 
   filter(Region == "Western Europe" & Sex == "Male" & Year == "2016") %>% 
   summarise(mean(SuicidePer100000))
-  
+
 combined_data_set %>% 
   filter(Region == "Australia and New Zealand" & Sex == "Female" & Year == "2016") %>% 
   summarise(mean(SuicidePer100000))
@@ -126,31 +118,22 @@ combined_data_set %>%
 combined_data_set %>% 
   filter(Region == "Australia and New Zealand" & Sex == "Male" & Year == "2016") %>% 
   summarise(mean(SuicidePer100000))
-```
-
-# Question
-**Does the World Happiness Report have any correlation to country suicide rates?**
-
-Using two data sets, Suicides Per 100,000 and 2015/2016 World Happiness Report, we will look to see if there is a connection between the "happiest" countries and amount of suicides.
-
-First, let's take a look at the ratio of male to female suicides. 
 
 
+combined_data_set %>% 
+  subset(select = -Region) %>% 
+  filter(Year == '2015') %>% 
+  arrange(HappinessRank) %>% 
+  top_n(-50) %>% 
+  summarise(mean(SuicidePer100000))
 
-| Region | Male | Female| Year|
-|--------|------|-------|-----|
-|Central and Eastern Europe| 19.4 | 4.02 | 2016 |
-|Latin America and Caribbean| 14.2 | 3.76 | 2016 |
-|Middle East and Northern Africa| 6.25 | 2.44 | 2016 |
-|Southeastern Asia| 9.56 | 4.4 | 2016 |
-|Southern Asia| 12.3 | 7.07 | 2016 |
-|Sub-Saharan Africa| 17 | 7.31 | 2016 |
-|Western Europe| 14.4 | 5.05 | 2016 |
-|Australia and New Zealand| 17.4 | 6.1 | 2016 |
-|North America| 18.1 | 6.1 | 2016
+combined_data_set %>% 
+  subset(select = -Region) %>% 
+  filter(Year == '2015') %>% 
+  arrange(HappinessRank) %>% 
+  top_n(50) %>% 
+  summarise(mean(SuicidePer100000))
 
-
-```{r, fg.width= 24, echo= FALSE}
 combined_data_set %>% 
   subset(select = -Region) %>% 
   filter(Year == '2016') %>% 
@@ -158,7 +141,8 @@ combined_data_set %>%
   top_n(-50) %>% 
 ggplot() +
   geom_col(aes(x = Country, y = SuicidePer100000, fill = Sex ))+
-  labs(title = "Top 25 Happiness Rank", subtitle = "2016")+
+  geom_segment(x = 0, y= 9.70, xend = 26, yend = 9.70, color = 'gold')+
+  labs(title = "Top 25 Happiness Rank", subtitle = "2016", y = "Suicide per 100000")+
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 combined_data_set %>% 
@@ -168,11 +152,10 @@ combined_data_set %>%
   top_n(50) %>% 
 ggplot() +
   geom_col(aes(x = Country, y = SuicidePer100000, fill = Sex ))+
-  labs(title = "Bottom 25 Happiness Rank", subtitle = "2016")+
+  geom_segment(x = 0, y= 11.6, xend = 26, yend = 11.6, color = 'gold')+
+  labs(title = "Bottom 25 Happiness Rank", subtitle = "2016", y = "Suicide per 100000")+
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
-```  
 
-```{r, fig.height= 18, fig.width= 18}
 #Female 2015 Happiness Rank vs. Suicides
 combined_data_set %>% 
   filter(Sex == 'Female' & Year == '2015') %>% 
@@ -208,9 +191,7 @@ combined_data_set %>%
    theme(axis.text.x = element_blank(),
         axis.title = element_text(face = "bold"))
 
-```
 
-```{r, fig.height= 18, fig.width= 18}
 #Male 2016 Happiness Rank vs. Suicides 
 combined_data_set %>% 
   filter(Sex == 'Male' & Year == '2016') %>% 
@@ -249,69 +230,67 @@ combined_data_set %>%
 
  
 
-```
+
 
 ## Tables for each region in the year 2016
 ##### Middle Eastern and Nothern Africa
-```{r, echo= FALSE}
+
 
 combined_data_set %>% 
   filter(Year == "2016" & Region == "Middle East and Northern Africa" & Sex == "Male") %>% 
   select(Country, HappinessRank)
-```
+
 
 ##### Central and Eastern Europe
-```{r, echo= FALSE}
+
 combined_data_set %>% 
   filter(Year == "2016" & Region == "Central and Eastern Europe" & Sex == "Male") %>% 
   select(Country, HappinessRank)
-```
 
 ##### Latin America and Caribbean
-```{r, echo= FALSE}
+
 combined_data_set %>% 
   filter(Year == "2016" & Region == "Latin America and Caribbean" & Sex == "Male") %>% 
   select(Country, HappinessRank)
-```
+
 
 ##### Southeastern Asia
-```{r, echo= FALSE}
+
 combined_data_set %>% 
   filter(Year == "2016" & Region == "Southeastern Asia" & Sex == "Male") %>% 
   select(Country, HappinessRank)
-```
+
 
 ##### Southern Asia
-```{r, echo= FALSE}
+
 combined_data_set %>% 
   filter(Year == "2016" & Region == "Southern Asia" & Sex == "Male") %>% 
   select(Country, HappinessRank)
-```
+
 
 ##### Sub-Saharan Africa
-```{r, echo= FALSE}
+
 combined_data_set %>% 
   filter(Year == "2016" & Region == "Sub-Saharan Africa" & Sex == "Male") %>% 
   select(Country, HappinessRank)
-```
+
 
 ##### Western Europe
-```{r, echo= FALSE}
+
 combined_data_set %>% 
   filter(Year == "2016" & Region == "Western Europe" & Sex == "Male") %>% 
   select(Country, HappinessRank)
-```
+
 
 ##### Australia and New Zealand
-```{r, echo= FALSE}
+
 combined_data_set %>% 
   filter(Year == "2016" & Region == "Australia and New Zealand" & Sex == "Male") %>% 
   select(Country, HappinessRank)
-```
+
 
 ##### North America
-```{r, echo= FALSE}
+
 combined_data_set %>% 
   filter(Year == "2016" & Region == "North America" & Sex == "Male") %>% 
   select(Country, HappinessRank)
-```

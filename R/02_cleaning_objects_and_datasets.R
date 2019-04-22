@@ -1,15 +1,5 @@
----
-title: "R Notebook"
-output: html_notebook
-editor_options: 
-  chunk_output_type: console
----
-```{r}
 library(tidyverse)
-```
 
-
-```{r}
 #Load csv file and filter out 'Both sexes'
 suicide_data <- read_csv(file = '~/Library/Mobile Documents/com~apple~CloudDocs/ISDS_3070/Suicide_vs_World_Happiness/data/final_project_data/data.csv') %>% 
   filter(Sex != 'Both sexes') %>% 
@@ -39,4 +29,3 @@ suicide_data_combined <- suicide_data %>%
 combined_data_set <- mutate(suicide_data_combined, Year = as.double(Year)) %>% 
   inner_join(world_happiness) %>% 
   filter(Year >= 2015)
-```

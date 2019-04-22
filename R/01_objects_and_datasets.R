@@ -1,16 +1,7 @@
----
-title: "Data Sets"
-output: html_notebook
-editor_options: 
-  chunk_output_type: console
----
 
-
-```{r}
 library(tidyverse)
-```
 
-```{r}
+
 #Load csv files and filter out 'Both sexes'
 suicide_data <- read_csv(file = '~/Library/Mobile Documents/com~apple~CloudDocs/ISDS_3070/Suicide_vs_World_Happiness/data/final_project_data/data.csv') %>% 
   filter(Sex != 'Both sexes') %>% 
@@ -36,20 +27,12 @@ suicide_data_combined <- suicide_data %>%
 combined_data_set <- mutate(suicide_data_combined, Year = as.double(Year)) %>% 
   left_join(world_happiness) %>% 
   filter(Year >= 2015)
-```
 
-```{r}
+
 #chaning col name
 colnames(combined_data_set) <- c("Country", "Year","Sex", "SuicidePer100000", "HappinessRank")
 
 
-
-
-```
-
-
-
-```{r}
 #makes years into a column
 suicide_data_01 <- suicide_data %>% 
   gather(Year, SuicidePer100000, 3:6)
@@ -95,9 +78,7 @@ suicide16_data_female <- suicide16_data_countries %>%
 suicide16_data_both <- suicide16_data_countries %>% 
   filter(Sex == 'Both sexes')
 
-```
 
-```{r}
 #separate suicide_data into suicide15_data to show only the suicides per 100,000 for 2015
 suicide15_data <- suicide_data %>% 
   select(Country, Sex, `2015`)
@@ -117,7 +98,5 @@ suicide15_data_female <- suicide15_data_countries %>%
 #separate to have both sexes
 suicide15_data_both <- suicide15_data_countries %>% 
   filter(Sex == 'Both sexes')
-
-```
 
 
