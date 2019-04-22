@@ -1,0 +1,129 @@
+---
+title: "2015 Figures and Table"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(tidyverse)
+library(DT)
+
+#Load csv file and filter out 'Both sexes'
+suicide_data <- read_csv(file = '~/Library/Mobile Documents/com~apple~CloudDocs/ISDS_3070/Suicide_vs_World_Happiness/data/final_project_data/data.csv') %>% 
+  filter(Sex != 'Both sexes') %>% 
+  gather(Year, SuicidePer100000, 3:6)
+
+#Load csv files and load only country and happiness rank
+world16_happiness_data <- read_csv(file = '~/Library/Mobile Documents/com~apple~CloudDocs/ISDS_3070/Suicide_vs_World_Happiness/data/final_project_data/world-happiness-report/2016.csv') %>% 
+  select(Country, HappinessRank, Region)
+
+world15_happiness_data <- read_csv(file = '~/Library/Mobile Documents/com~apple~CloudDocs/ISDS_3070/Suicide_vs_World_Happiness/data/final_project_data/world-happiness-report/2015.csv') %>%  
+  select(Country, HappinessRank, Region)
+
+#adds year columns to world_happiness
+
+world15_happiness_data$Year <- 2015
+
+world16_happiness_data$Year <- 2016
+
+#combines both world_happiness data sets to each other
+world_happiness <- bind_rows(world15_happiness_data, world16_happiness_data)
+
+#filters out countries that are not within both sets 
+suicide_data_combined <- suicide_data %>% 
+  filter(Country %in% world_happiness$Country)
+
+#creates final data set to have 5 columns: country, year, sex, suicidesper100000, happiness rank
+combined_data_set <- mutate(suicide_data_combined, Year = as.double(Year)) %>% 
+  inner_join(world_happiness) %>% 
+  filter(Year >= 2015)
+```
+
+Column {.tabset}
+-----------------------------------------------------------------------
+
+### Chart A
+
+```{r, fig.width=18, fig.height=15}
+#Female 2015 Happiness Rank vs. Suicides
+combined_data_set %>% 
+  filter(Sex == 'Female' & Year == '2015') %>% 
+  arrange(HappinessRank) %>%
+  mutate(RankofHappiness = case_when( HappinessRank >= 1 & HappinessRank <= 52 ~ "Rank 1-52",
+                                      HappinessRank >= 53 & HappinessRank <= 106 ~ "Rank 53-106",
+                                      HappinessRank >= 106 & HappinessRank <= 157 ~ "Rank 107-158")) %>%  
+   subset(!is.na(RankofHappiness)) %>% 
+
+  ggplot()+
+  geom_col(aes(x = Country, y = SuicidePer100000, fill = RankofHappiness))+
+  geom_segment(x = 0, y = 5.32, xend = 157, yend = 5.32, color = 'gold')+
+  facet_wrap(RankofHappiness ~ Region, scales = "free")+
+  labs(title = "Happiness Rank vs. Suicides", subtitle = "Females, 2015", x = 'Country', 
+                                          y ='Suicides per 100000')+
+   theme(axis.text.x = element_blank(),
+        axis.title = element_text(face = "bold"))
+
+```
+
+### Chart B
+
+```{r,fig.width=18, fig.height=15}
+#Male 2015 Happiness Rank vs. Suicides 
+combined_data_set %>% 
+  filter(Sex == 'Male' & Year == '2015') %>% 
+  arrange(HappinessRank) %>%
+  mutate(RankofHappiness = case_when( HappinessRank >= 1 & HappinessRank <= 52 ~ "Rank 1-52",
+                                      HappinessRank >= 53 & HappinessRank <= 106 ~ "Rank 53-106",
+                                      HappinessRank >= 106 & HappinessRank <= 157 ~ "Rank 107-158")) %>% 
+   subset(!is.na(RankofHappiness)) %>% 
+
+  ggplot()+
+  geom_col(aes(x = Country, y = SuicidePer100000, fill = RankofHappiness))+
+  geom_segment(x = 0, y = 15, xend = 157, yend = 15, color = 'gold')+
+  facet_wrap(RankofHappiness ~ Region, scales = "free")+
+  labs(title = "Happiness Rank vs. Suicides", subtitle = "Males, 2015", x = 'Country', 
+                                          y ='Suicides per 100000')+
+   theme(axis.text.x = element_blank(),
+        axis.title = element_text(face = "bold"))
+
+```
+
+### Chart C
+
+```{r}
+combined_data_set %>% 
+  subset(select = -Region) %>% 
+  filter(Year == '2015') %>% 
+  arrange(HappinessRank) %>% 
+  top_n(-50) %>% 
+ggplot() +
+  geom_col(aes(x = Country, y = SuicidePer100000, fill = Sex ))+
+  geom_segment(x = 0, y= 9.43, xend = 26, yend = 9.43, color = 'gold')+
+  labs(title = "Top 25 Happiness Rank", subtitle = "2015", y = "Suicide per 100000")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+### Chart D
+```{r}
+combined_data_set %>% 
+  subset(select = -Region) %>% 
+  filter(Year == '2015') %>% 
+  arrange(HappinessRank) %>% 
+  top_n(50) %>% 
+ggplot() +
+  geom_col(aes(x = Country, y = SuicidePer100000, fill = Sex ))+
+  geom_segment(x = 0, y= 11.6, xend = 26, yend = 11.6, color = 'gold')+
+  labs(title = "Bottom 25 Happiness Rank", subtitle = "2015", y = "Suicide per 100000")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+```
+
+### Chart E
+```{r}
+combined_data_set %>%
+  filter(Year == '2015') %>% 
+  datatable(options = list(pageLength = 20))
+
+```
