@@ -52,9 +52,9 @@ Column {.tabset}
 combined_data_set %>% 
   filter(Sex == 'Female' & Year == '2015') %>% 
   arrange(HappinessRank) %>%
-  mutate(RankofHappiness = case_when( HappinessRank >= 1 & HappinessRank <= 52 ~ "Top 52",
+  mutate(RankofHappiness = case_when( HappinessRank >= 1 & HappinessRank <= 52 ~ "Rank 1-52",
                                       HappinessRank >= 53 & HappinessRank <= 106 ~ "Rank 53-106",
-                                      HappinessRank >= 106 & HappinessRank <= 157 ~ "Bottom 52")) %>%  
+                                      HappinessRank >= 106 & HappinessRank <= 157 ~ "Rank 107-158")) %>%  
    subset(!is.na(RankofHappiness)) %>% 
 
   ggplot()+
@@ -75,9 +75,9 @@ combined_data_set %>%
 combined_data_set %>% 
   filter(Sex == 'Male' & Year == '2015') %>% 
   arrange(HappinessRank) %>%
-  mutate(RankofHappiness = case_when( HappinessRank >= 1 & HappinessRank <= 52 ~ "Top 52",
+  mutate(RankofHappiness = case_when( HappinessRank >= 1 & HappinessRank <= 52 ~ "Rank 1-52",
                                       HappinessRank >= 53 & HappinessRank <= 106 ~ "Rank 53-106",
-                                      HappinessRank >= 106 & HappinessRank <= 157 ~ "Bottom 52")) %>% 
+                                      HappinessRank >= 106 & HappinessRank <= 157 ~ "Rank 107-158")) %>% 
    subset(!is.na(RankofHappiness)) %>% 
 
   ggplot()+

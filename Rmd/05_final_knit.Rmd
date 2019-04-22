@@ -1,9 +1,9 @@
 ---
 title: "2016 Suicides vs. Happines Rankings"
 output:
-  pdf_document: default
   html_document:
     df_print: paged
+  pdf_document: default
 editor_options:
   chunk_output_type: console
 ---
@@ -133,7 +133,7 @@ combined_data_set %>%
 # Question
 **Does the World Happiness Report have any correlation to country suicide rates?**
 
-Using two data sets, Suicides Per 100,000 and 2015/2016 World Happiness Report, we will look to see if there is a connection between the "happiest" countries and amount of suicides. The World Happiness report uses economic and social development to determine happiness rank. The report negates the fact there is more to happiness than policy and economic well-being. With the help of data collected by the World Health Organization, a more in-depth analysis can be made about happiness per country. 
+Using two data sets, Suicides Per 100,000 and 2015/2016 World Happiness Report, we will look to see if there is a connection between the "happiest" countries and amount of suicides. The World Happiness Report uses economic and social development to determine happiness rank. The report negates the fact there is more to happiness than policy and economic well-being. With the help of data collected by the World Health Organization, a more in-depth analysis can be made about happiness per country. 
 
 ### Male to Female Ratio
 
@@ -152,7 +152,7 @@ First, let's take a look at the ratio of male to female suicides per region.
 |Sub-Saharan Africa| 17 | 7.31 | 2016 |
 |Western Europe| 14.4 | 5.05 | 2016 |
 
-### Happiness Rankings and suicides
+### Happiness Rankings and Suicides
 
 By rearranging the *HappinessRank* column into numerical order and taking only the top 25 and the bottom 25 ranked countries, the graphs do not look much different. The top 25 ranked countries have a mean of 9.70 suicides per 100000 while the bottom 25 have 11.6 suicides per 100000. 
 
@@ -189,9 +189,9 @@ Each region is broken down into tiers of Happiness Rank then separated into grap
 combined_data_set %>% 
   filter(Sex == 'Male' & Year == '2016') %>% 
   arrange(HappinessRank) %>%
-  mutate(RankofHappiness = case_when( HappinessRank >= 1 & HappinessRank <= 52 ~ "Top 52",
+  mutate(RankofHappiness = case_when( HappinessRank >= 1 & HappinessRank <= 52 ~ "Rank 1-52",
                                       HappinessRank >= 53 & HappinessRank <= 106 ~ "Rank 53-106",
-                                      HappinessRank >= 106 & HappinessRank <= 157 ~ "Bottom 52")) %>% 
+                                      HappinessRank >= 106 & HappinessRank <= 157 ~ "Rank 107-158")) %>% 
   subset(!is.na(RankofHappiness)) %>% 
 
   ggplot()+
@@ -207,9 +207,9 @@ combined_data_set %>%
 combined_data_set %>% 
   filter(Sex == 'Female' & Year == '2016') %>% 
   arrange(HappinessRank) %>%
-  mutate(RankofHappiness = case_when( HappinessRank >= 1 & HappinessRank <= 52 ~ "Top 52",
+  mutate(RankofHappiness = case_when( HappinessRank >= 1 & HappinessRank <= 52 ~ "Rank 1-52",
                                       HappinessRank >= 53 & HappinessRank <= 106 ~ "Rank 53-106",
-                                      HappinessRank >= 106 & HappinessRank <= 157 ~ "Bottom 52")) %>% 
+                                      HappinessRank >= 106 & HappinessRank <= 157 ~ "Rank 107-158")) %>% 
   subset(!is.na(RankofHappiness)) %>% 
 
   ggplot()+
@@ -293,4 +293,4 @@ combined_data_set %>%
 
 # Conclusion 
 
-Using the World Happiness Report and the suicides per 100000 from the World Health Organization it is determined that Happiness Rank and Suicides have no correlation. For example the United States is ranked 14th but have 21.1 suicides per 100000 for males when the average is 14.7. 
+Using the World Happiness Report and the Suicides Per 100000 from the World Health Organization it is determined that Happiness Rank and Suicides have no correlation. For example the United States is ranked 14th but have 21.1 suicides per 100000 for males when the average is 14.7. On the other hand Iraq is ranked 112th but males only have 4.7 suicides per 100000.
