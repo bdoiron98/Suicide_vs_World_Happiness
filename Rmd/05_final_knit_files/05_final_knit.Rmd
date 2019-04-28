@@ -1,9 +1,9 @@
 ---
 title: "2016 Suicides vs. Happines Rankings"
 output:
-  pdf_document: default
   html_document:
     df_print: paged
+  pdf_document: default
 editor_options:
   chunk_output_type: console
 ---
@@ -162,10 +162,11 @@ combined_data_set %>%
   filter(Year == '2016') %>% 
   arrange(HappinessRank) %>% 
   top_n(-50) %>% 
-ggplot() +
-  geom_col(aes(x = Country, y = SuicidePer100000, fill = Sex ))+
+  ggplot(aes(x = reorder(Country, -HappinessRank), y = SuicidePer100000, fill = Sex))+
+  geom_bar(stat = "identity")+
   geom_segment(x = 0, y= 9.70, xend = 26, yend = 9.70, color = 'gold')+
-  labs(title = "Top 25 Happiness Rank", subtitle = "2016", y = "Suicide per 100000")+
+  labs(title = "Top 25 Happiness Rank", subtitle = "2016, Ranks 1-25", x = "Country", 
+       y = "Suicide per 100000")+
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 combined_data_set %>% 
@@ -173,11 +174,12 @@ combined_data_set %>%
   filter(Year == '2016') %>% 
   arrange(HappinessRank) %>% 
   top_n(50) %>% 
-ggplot() +
-  geom_col(aes(x = Country, y = SuicidePer100000, fill = Sex ))+
-  geom_segment(x = 0, y= 11.6, xend = 26, yend = 11.6, color = 'gold')+
-  labs(title = "Bottom 25 Happiness Rank", subtitle = "2016", y = "Suicide per 100000")+
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+  ggplot(aes(x = reorder(Country, -HappinessRank), y = SuicidePer100000, fill = Sex))+
+  geom_bar(stat = "identity")+
+  geom_segment(x = 0, y= 9.70, xend = 26, yend = 9.70, color = 'gold')+
+  labs(title = "Bottom 25 Happiness Rank", subtitle = "2016, Ranks 130-157", x = "Country", 
+       y = "Suicide per 100000")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```  
 
 ### Regions, Ranks, and Suicides

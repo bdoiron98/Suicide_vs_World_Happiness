@@ -122,7 +122,7 @@ combined_data_set %>%
 
 combined_data_set %>% 
   subset(select = -Region) %>% 
-  filter(Year == '2015') %>% 
+  filter(Year == '2016') %>% 
   arrange(HappinessRank) %>% 
   top_n(-50) %>% 
   summarise(mean(SuicidePer100000))
@@ -134,27 +134,58 @@ combined_data_set %>%
   top_n(50) %>% 
   summarise(mean(SuicidePer100000))
 
+
+# Bar chart with x axis in significant order 2016 top 25
 combined_data_set %>% 
   subset(select = -Region) %>% 
   filter(Year == '2016') %>% 
   arrange(HappinessRank) %>% 
   top_n(-50) %>% 
-ggplot() +
-  geom_col(aes(x = Country, y = SuicidePer100000, fill = Sex ))+
+  ggplot(aes(x = reorder(Country, -HappinessRank), y = SuicidePer100000, fill = Sex))+
+  geom_bar(stat = "identity")+
   geom_segment(x = 0, y= 9.70, xend = 26, yend = 9.70, color = 'gold')+
-  labs(title = "Top 25 Happiness Rank", subtitle = "2016", y = "Suicide per 100000")+
+  labs(title = "Top 25 Happiness Rank", subtitle = "2016, Ranks 1-25", x = "Country", 
+       y = "Suicide per 100000")+
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
+# Bar chart with x axis in significant order 2016 bottom 25
 combined_data_set %>% 
   subset(select = -Region) %>% 
   filter(Year == '2016') %>% 
   arrange(HappinessRank) %>% 
   top_n(50) %>% 
-ggplot() +
-  geom_col(aes(x = Country, y = SuicidePer100000, fill = Sex ))+
-  geom_segment(x = 0, y= 11.6, xend = 26, yend = 11.6, color = 'gold')+
-  labs(title = "Bottom 25 Happiness Rank", subtitle = "2016", y = "Suicide per 100000")+
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+  ggplot(aes(x = reorder(Country, -HappinessRank), y = SuicidePer100000, fill = Sex))+
+  geom_bar(stat = "identity")+
+  geom_segment(x = 0, y= 9.70, xend = 26, yend = 9.70, color = 'gold')+
+  labs(title = "Bottom 25 Happiness Rank", subtitle = "2016, Ranks 130-157", x = "Country", 
+       y = "Suicide per 100000")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+# Bar chart with x axis in significant order 2015 top 25
+combined_data_set %>% 
+  subset(select = -Region) %>% 
+  filter(Year == '2015') %>% 
+  arrange(HappinessRank) %>% 
+  top_n(-50) %>% 
+  ggplot(aes(x = reorder(Country, -HappinessRank), y = SuicidePer100000, fill = Sex))+
+  geom_bar(stat = "identity")+
+  geom_segment(x = 0, y= 11.60, xend = 26, yend = 11.60, color = 'gold')+
+  labs(title = "Top 25 Happiness Rank", subtitle = "2015, Ranks 1-25", y = "Suicide per 100000")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# Bar chart with x axis in significant order 2015 bottom 25
+combined_data_set %>% 
+  subset(select = -Region) %>% 
+  filter(Year == '2015') %>% 
+  arrange(HappinessRank) %>% 
+  top_n(50) %>% 
+  ggplot(aes(x = reorder(Country, -HappinessRank), y = SuicidePer100000, fill = Sex))+
+  geom_bar(stat = "identity")+
+  geom_segment(x = 0, y= 11.60, xend = 26, yend = 11.60, color = 'gold')+
+  labs(title = "Bottom 25 Happiness Rank", subtitle = "2015, Ranks 130-157", y = "Suicide per 100000")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
 
 #Female 2015 Happiness Rank vs. Suicides
 combined_data_set %>% 
