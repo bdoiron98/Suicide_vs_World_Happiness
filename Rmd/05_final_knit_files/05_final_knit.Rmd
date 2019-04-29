@@ -10,19 +10,20 @@ editor_options:
 ```{r, include=FALSE}
 library(tidyverse)
 library(tinytex)
+library(here)
 ```
 
 ```{r setup, include=FALSE}
 #Load csv file and filter out 'Both sexes'
-suicide_data <- read_csv(file = '~/Library/Mobile Documents/com~apple~CloudDocs/ISDS_3070/Suicide_vs_World_Happiness/data/final_project_data/data.csv') %>% 
+suicide_data <- read_csv(here("data","final_project_data","data.csv")) %>% 
   filter(Sex != 'Both sexes') %>% 
   gather(Year, SuicidePer100000, 3:6)
 
 #Load csv files and load only country and happiness rank
-world16_happiness_data <- read_csv(file = '~/Library/Mobile Documents/com~apple~CloudDocs/ISDS_3070/Suicide_vs_World_Happiness/data/final_project_data/world-happiness-report/2016.csv') %>% 
+world16_happiness_data <- read_csv(here("data","final_project_data","world-happiness-report","2016.csv")) %>% 
   select(Country, HappinessRank, Region)
 
-world15_happiness_data <- read_csv(file = '~/Library/Mobile Documents/com~apple~CloudDocs/ISDS_3070/Suicide_vs_World_Happiness/data/final_project_data/world-happiness-report/2015.csv') %>%  
+world15_happiness_data <- read_csv(here("data","final_project_data","world-happiness-report","2015.csv")) %>%  
   select(Country, HappinessRank, Region)
 
 #adds year columns to world_happiness
