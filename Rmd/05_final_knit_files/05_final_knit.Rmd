@@ -46,7 +46,7 @@ combined_data_set <- mutate(suicide_data_combined, Year = as.double(Year)) %>%
 
 # Calculations
 
-# 2016 Calculations
+# 2016 Calculations for average line in bar chart
 combined_data_set %>% 
   filter(Sex == 'Male' & Year == '2016') %>% 
   summarise(mean(SuicidePer100000))
@@ -55,8 +55,7 @@ combined_data_set %>%
   filter(Sex == 'Female' & Year == '2016') %>% 
   summarise(mean(SuicidePer100000))
 
-# 2015 Calculations
-
+# 2015 Calculations for average line in bar chart
 combined_data_set %>% 
   filter(Sex == 'Male' & Year == '2015') %>% 
   summarise(mean(SuicidePer100000))
@@ -166,7 +165,7 @@ combined_data_set %>%
   ggplot(aes(x = reorder(Country, -HappinessRank), y = SuicidePer100000, fill = Sex))+
   geom_bar(stat = "identity")+
   geom_segment(x = 0, y= 9.70, xend = 26, yend = 9.70, color = 'gold')+
-  labs(title = "Top 25 Happiness Rank", subtitle = "2016, Ranks 1-25", x = "Country", 
+  labs(title = "Top 25 Happiness Rank", subtitle = "2016, Ranks 25-1", x = "Country", 
        y = "Suicide per 100000")+
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
@@ -178,7 +177,7 @@ combined_data_set %>%
   ggplot(aes(x = reorder(Country, -HappinessRank), y = SuicidePer100000, fill = Sex))+
   geom_bar(stat = "identity")+
   geom_segment(x = 0, y= 9.70, xend = 26, yend = 9.70, color = 'gold')+
-  labs(title = "Bottom 25 Happiness Rank", subtitle = "2016, Ranks 130-157", x = "Country", 
+  labs(title = "Bottom 25 Happiness Rank", subtitle = "2016, Ranks 157-130", x = "Country", 
        y = "Suicide per 100000")+
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```  
