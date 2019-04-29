@@ -12,15 +12,15 @@ library(tidyverse)
 library(DT)
 
 #Load csv file and filter out 'Both sexes'
-suicide_data <- read_csv(file = '~/Library/Mobile Documents/com~apple~CloudDocs/ISDS_3070/Suicide_vs_World_Happiness/data/final_project_data/data.csv') %>% 
+suicide_data <- read_csv(here("data","final_project_data","data.csv")) %>% 
   filter(Sex != 'Both sexes') %>% 
   gather(Year, SuicidePer100000, 3:6)
 
 #Load csv files and load only country and happiness rank
-world16_happiness_data <- read_csv(file = '~/Library/Mobile Documents/com~apple~CloudDocs/ISDS_3070/Suicide_vs_World_Happiness/data/final_project_data/world-happiness-report/2016.csv') %>% 
+world16_happiness_data <- read_csv(here("data","final_project_data","world-happiness-report","2016.csv")) %>% 
   select(Country, HappinessRank, Region)
 
-world15_happiness_data <- read_csv(file = '~/Library/Mobile Documents/com~apple~CloudDocs/ISDS_3070/Suicide_vs_World_Happiness/data/final_project_data/world-happiness-report/2015.csv') %>%  
+world15_happiness_data <- read_csv(here("data","final_project_data","world-happiness-report","2015.csv")) %>%  
   select(Country, HappinessRank, Region)
 
 #adds year columns to world_happiness
@@ -102,7 +102,7 @@ combined_data_set %>%
   ggplot(aes(x = reorder(Country, -HappinessRank), y = SuicidePer100000, fill = Sex))+
   geom_bar(stat = "identity")+
   geom_segment(x = 0, y= 11.60, xend = 26, yend = 11.60, color = 'gold')+
-  labs(title = "Top 25 Happiness Rank", subtitle = "2015, Ranks 1-25", x = "Country", 
+  labs(title = "Top 25 Happiness Rank", subtitle = "2015, Ranks 25-1", x = "Country", 
        y = "Suicide per 100000")+
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
@@ -117,7 +117,7 @@ combined_data_set %>%
   ggplot(aes(x = reorder(Country, -HappinessRank), y = SuicidePer100000, fill = Sex))+
   geom_bar(stat = "identity")+
   geom_segment(x = 0, y= 11.60, xend = 26, yend = 11.60, color = 'gold')+
-  labs(title = "Bottom 25 Happiness Rank", subtitle = "2015, Ranks 130-157", x = "Country", 
+  labs(title = "Bottom 25 Happiness Rank", subtitle = "2015, Ranks 157-130", x = "Country", 
        y = "Suicide per 100000")+
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
