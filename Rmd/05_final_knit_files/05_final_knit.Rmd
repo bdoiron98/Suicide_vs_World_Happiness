@@ -1,9 +1,9 @@
 ---
 title: "2016 Suicides vs. Happines Rankings"
 output:
+  pdf_document: default
   html_document:
     df_print: paged
-  pdf_document: default
 editor_options:
   chunk_output_type: console
 ---
@@ -11,6 +11,7 @@ editor_options:
 library(tidyverse)
 library(tinytex)
 library(here)
+library(plotly)
 ```
 
 ```{r setup, include=FALSE}
@@ -157,7 +158,7 @@ First, let's take a look at the ratio of male to female suicides per region.
 By rearranging the *HappinessRank* column into numerical order and taking only the top 25 and the bottom 25 ranked countries, the graphs do not look much different. The top 25 ranked countries have a mean of 9.70 suicides per 100000 while the bottom 25 have 11.6 suicides per 100000. 
 
 ```{r, fg.width= 24, echo= FALSE}
-combined_data_set %>% 
+ggplotly(combined_data_set %>% 
   subset(select = -Region) %>% 
   filter(Year == '2016') %>% 
   arrange(HappinessRank) %>% 
@@ -167,9 +168,9 @@ combined_data_set %>%
   geom_segment(x = 0, y= 9.70, xend = 26, yend = 9.70, color = 'gold')+
   labs(title = "Top 25 Happiness Rank", subtitle = "2016, Ranks 25-1", x = "Country", 
        y = "Suicide per 100000")+
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)))
 
-combined_data_set %>% 
+ggplotly(combined_data_set %>% 
   subset(select = -Region) %>% 
   filter(Year == '2016') %>% 
   arrange(HappinessRank) %>% 
@@ -179,16 +180,16 @@ combined_data_set %>%
   geom_segment(x = 0, y= 9.70, xend = 26, yend = 9.70, color = 'gold')+
   labs(title = "Bottom 25 Happiness Rank", subtitle = "2016, Ranks 157-130", x = "Country", 
        y = "Suicide per 100000")+
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)))
 ```  
 
 ### Regions, Ranks, and Suicides
 
 Each region is broken down into tiers of Happiness Rank then separated into graphs. Each graph has the average number of suicides per 100000 based off sex. The only two regions that do not have countries in each tier are Western Europe and North America. Interestingly, the only region with average suicides for male and female below the world average is Middle East and Northern Africa besides one country. 
 
-```{r, fig.height= 18, fig.width= 18, echo=FALSE}
+```{r,fig.width= 11, fig.height=8, echo=FALSE}
 #Male 2016 Happiness Rank vs. Suicides 
-combined_data_set %>% 
+ggplotly(combined_data_set %>% 
   filter(Sex == 'Male' & Year == '2016') %>% 
   arrange(HappinessRank) %>%
   mutate(RankofHappiness = case_when( HappinessRank >= 1 & HappinessRank <= 52 ~ "Rank 1-52",
@@ -202,11 +203,12 @@ combined_data_set %>%
   facet_wrap(RankofHappiness ~ Region, scales = "free")+
   labs(title = "Happiness Rank vs. Suicides", subtitle = "Males, 2016", x = 'Country', 
                                           y ='Suicides per 100000')+
-   theme(axis.text.x = element_blank(),
-        axis.title = element_text(face = "bold"))
+    theme(axis.text.x = element_blank(),
+        axis.title = element_text(face = "bold"),
+        strip.text = element_text(size = 4))) 
 
 #Female 2016 Happiness Rank vs. Suicides
-combined_data_set %>% 
+ggplotly(combined_data_set %>% 
   filter(Sex == 'Female' & Year == '2016') %>% 
   arrange(HappinessRank) %>%
   mutate(RankofHappiness = case_when( HappinessRank >= 1 & HappinessRank <= 52 ~ "Rank 1-52",
@@ -220,8 +222,9 @@ combined_data_set %>%
   facet_wrap(RankofHappiness ~ Region, scales = "free")+
   labs(title = "Happiness Rank vs. Suicides", subtitle = "Females, 2016", x = 'Country', 
                                           y ='Suicides per 100000')+
-   theme(axis.text.x = element_blank(),
-        axis.title = element_text(face = "bold"))
+    theme(axis.text.x = element_blank(),
+        axis.title = element_text(face = "bold"),
+        strip.text = element_text(size = 4))) 
   
 ```
 
