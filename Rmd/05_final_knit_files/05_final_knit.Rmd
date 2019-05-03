@@ -1,15 +1,16 @@
 ---
 title: "2016 Suicides vs. Happines Rankings"
 output:
-  pdf_document: default
   html_document:
     df_print: paged
+  pdf_document: default
 editor_options:
   chunk_output_type: console
 ---
 ```{r, include=FALSE}
 library(tidyverse)
 library(tinytex)
+library(ggplot2)
 library(here)
 library(plotly)
 ```
@@ -189,42 +190,44 @@ Each region is broken down into tiers of Happiness Rank then separated into grap
 
 ```{r,fig.width= 11, fig.height=8, echo=FALSE}
 #Male 2016 Happiness Rank vs. Suicides 
+dt <- combined_data_set %>% 
+  filter(Sex == 'Male' & Year == '2016') %>% 
+  group_by(Region) %>% 
+  mutate(RegionCount = n())
+
+
 ggplotly(combined_data_set %>% 
   filter(Sex == 'Male' & Year == '2016') %>% 
-  arrange(HappinessRank) %>%
-  mutate(RankofHappiness = case_when( HappinessRank >= 1 & HappinessRank <= 52 ~ "Rank 1-52",
-                                      HappinessRank >= 53 & HappinessRank <= 106 ~ "Rank 53-106",
-                                      HappinessRank >= 106 & HappinessRank <= 157 ~ "Rank 107-158")) %>% 
-  subset(!is.na(RankofHappiness)) %>% 
-
-  ggplot()+
-  geom_col(aes(x = Country, y = SuicidePer100000, fill = RankofHappiness))+
-  geom_segment(x = 0, y = 14.7, xend = 157, yend = 14.7, color = 'gold')+
-  facet_wrap(RankofHappiness ~ Region, scales = "free")+
-  labs(title = "Happiness Rank vs. Suicides", subtitle = "Males, 2016", x = 'Country', 
+  group_by(Region) %>% 
+  mutate(RegionCount = n())%>% 
+  ggplot(aes(x = HappinessRank, y = SuicidePer100000, color = Region))+
+    geom_point()+
+    stat_ellipse(data = filter(dt, RegionCount >= 30), mapping = aes(x = HappinessRank, 
+                                                                    y = SuicidePer100000, 
+                                                                    color = Region))+
+   labs(title = "Happiness Rank vs. Suicides", subtitle = "Males, 2016", x = 'Country', 
                                           y ='Suicides per 100000')+
     theme(axis.text.x = element_blank(),
-        axis.title = element_text(face = "bold"),
-        strip.text = element_text(size = 4))) 
+        axis.title = element_text(face = "bold")))
 
 #Female 2016 Happiness Rank vs. Suicides
+dt2 <- combined_data_set %>% 
+  filter(Sex == 'Female' & Year == '2016') %>% 
+  group_by(Region) %>% 
+  mutate(RegionCount = n())
+
+
+
 ggplotly(combined_data_set %>% 
   filter(Sex == 'Female' & Year == '2016') %>% 
-  arrange(HappinessRank) %>%
-  mutate(RankofHappiness = case_when( HappinessRank >= 1 & HappinessRank <= 52 ~ "Rank 1-52",
-                                      HappinessRank >= 53 & HappinessRank <= 106 ~ "Rank 53-106",
-                                      HappinessRank >= 106 & HappinessRank <= 157 ~ "Rank 107-158")) %>% 
-  subset(!is.na(RankofHappiness)) %>% 
-
-  ggplot()+
-  geom_col(aes(x = Country, y = SuicidePer100000, fill = RankofHappiness))+
-  geom_segment(x = 0, y = 5.21, xend = 157, yend = 5.21, color = 'gold')+
-  facet_wrap(RankofHappiness ~ Region, scales = "free")+
+  group_by(Region) %>% 
+  mutate(RegionCount = n())%>% 
+  ggplot(aes(x = HappinessRank, y = SuicidePer100000, color = Region))+
+    geom_point()+
   labs(title = "Happiness Rank vs. Suicides", subtitle = "Females, 2016", x = 'Country', 
                                           y ='Suicides per 100000')+
     theme(axis.text.x = element_blank(),
-        axis.title = element_text(face = "bold"),
-        strip.text = element_text(size = 4))) 
+        axis.title = element_text(face = "bold")))
   
 ```
 
